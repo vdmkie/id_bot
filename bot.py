@@ -1,7 +1,6 @@
 from telegram.ext import Updater, MessageHandler, Filters
 
-# === Вставь сюда токен своего бота ===
-TOKEN = 8083231919:AAHtt6c7wE1d-V3f2eBO3WDjXJ7AxSxEzYs
+TOKEN = 8498478959:AAGIQJUxkFGaiWXn_PtiSmbvk0-t2nBU_AY
 
 def message_handler(update, context):
     chat = update.effective_chat
@@ -9,21 +8,18 @@ def message_handler(update, context):
 
     print("==========")
     print(f"Chat title: {chat.title}")
-    print(f"Chat ID: {chat.id}")   # ID супергруппы
+    print(f"Chat ID: {chat.id}")
+    if msg.message_thread_id:
+        print(f"Topic ID (message_thread_id): {msg.message_thread_id}")
     print(f"User: {msg.from_user.full_name} ({msg.from_user.id})")
     print(f"Message: {msg.text}")
-
-    # Если сообщение в топике (форум)
-    if msg.message_thread_id:
-        print(f"Topic (message_thread_id): {msg.message_thread_id}")
 
 def main():
     updater = Updater(TOKEN, use_context=True)
     dp = updater.dispatcher
-
     dp.add_handler(MessageHandler(Filters.all, message_handler))
 
-    print("Бот запущен. Напиши что-нибудь в группу/топик.")
+    print("Бот запущен...")
     updater.start_polling()
     updater.idle()
 
