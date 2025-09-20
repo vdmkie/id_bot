@@ -4,9 +4,9 @@ from telegram import Update
 from telegram.ext import Application, MessageHandler, filters, ContextTypes
 
 # === Берём токен из переменной окружения ===
-TOKEN = os.getenv("BOT_TOKEN")
+TOKEN = os.getenv("TELEGRAM_TOKEN")
 
-# Логирование (для дебага на Render)
+# Логирование (видно в Render → Logs)
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     level=logging.INFO
@@ -28,12 +28,12 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def main():
     if not TOKEN:
-        raise RuntimeError("Не найден BOT_TOKEN. Установи переменную окружения!")
+        raise RuntimeError("❌ TELEGRAM_TOKEN не найден. Задай переменную окружения!")
 
     app = Application.builder().token(TOKEN).build()
     app.add_handler(MessageHandler(filters.ALL, message_handler))
 
-    print("Бот запущен. Жду сообщения...")
+    print("✅ Бот запущен. Жду сообщения...")
     await app.run_polling()
 
 if __name__ == "__main__":
