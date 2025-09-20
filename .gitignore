@@ -1,26 +1,9 @@
-# Python
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
-*.so
-
-# Виртуальное окружение
+*.log
 .venv/
 env/
 venv/
-
-# Логи
-*.log
-
-# Системные файлы
 .DS_Store
-Thumbs.db
-
-# IDE
-.vscode/
 .idea/
-
-# Кэш pip
-pip-wheel-metadata/
-*.egg-info/
+.vscode/
