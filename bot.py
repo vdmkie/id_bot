@@ -1,12 +1,18 @@
 import os
-import asyncio
 from telegram import Update
-from telegram.ext import Application, MessageHandler, ContextTypes, filters
+from telegram.ext import Application, CommandHandler, MessageHandler, ContextTypes, filters
 
-# Берём токен из переменной окружения
+# === Получаем токен из переменной окружения ===
 TOKEN = os.getenv("TELEGRAM_TOKEN")
 if not TOKEN:
     raise RuntimeError("❌ TELEGRAM_TOKEN не найден. Добавь его в Render → Environment → Environment Variables.")
+
+# === Команда /start ===
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        "👋 Привет! Я бот для получения ID.\n"
+        "Напиши что-нибудь в супергруппе или в топике, и я пришлю ID."
+    )
 
 # === Обработка любого сообщения ===
 async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -20,18 +26,20 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"✉️ Message: {msg.text}\n"
     )
 
+    # Если сообщение в топике — покажем его ID
     if msg.message_thread_id:
         reply_text += f"\n🧵 Topic ID: {msg.message_thread_id}"
 
     await msg.reply_text(reply_text)
 
-# === Основной запуск ===
-async def main():
+# === Запуск приложения ===
+def main():
     app = Application.builder().token(TOKEN).build()
+
+    app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.ALL, message_handler))
 
-    print("✅ Бот запущен и работает на Render!")
-    await app.run_polling()
+    app.run_polling()
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
